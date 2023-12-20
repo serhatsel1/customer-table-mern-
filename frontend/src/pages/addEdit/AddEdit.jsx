@@ -28,8 +28,9 @@ export const AddEdit = () => {
 
   const getSingleUser = async (id) => {
     const res = await axios.get(`http://localhost:8080/users/${id}`);
+    // console.log("User Data:", res.data);
     if (res.status === 200) {
-      setData({ ...res.data });
+      setData({ ...res.data.user });
     }
   };
 

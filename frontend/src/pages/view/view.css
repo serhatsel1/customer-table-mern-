@@ -1,5 +1,6 @@
 .view {
   background-color: orange;
+  margin-top: 250px;
   padding: 100px;
   border-radius: 30px;
   display: flex;

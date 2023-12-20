@@ -1,72 +1,56 @@
 import { v4 as uuid } from "uuid";
+import User from "../models/userModel.js";
+import { json } from "express";
 
-let users = [
-  {
-    id: uuid(),
-    name: "Serhat",
-    email: "deneme@deneme",
-    country: "Turkey",
-    contact: 5305222221,
-  },
-  {
-    id: uuid(),
-    name: "Sena",
-    email: "deneme2@deneme",
-    country: "Turkey",
-    contact: 5305222222,
-  },
-];
+const getUsers = async (req, res) => {
+  const users = await User.find();
 
-const getUsers = (req, res) => {
-  res.status(200).send(users);
+  res.status(200).json({ users });
 };
-const getSingleUser = (req, res) => {
-  const { id } = req.params;
-  const user = users.find((i) => i.id == id);
-  console.log(id);
-  if (!user) {
-    res.status(404).send("User not found !");
+const getSingleUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      // Belirtilen ID ile kullanıcı bulunamadı.
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // console.log("User--->", user);
+    res.status(200).json({ user, id: user._id });
+  } catch (error) {
+    // Başka bir hata oluştu.
+    console.error("Error fetching user:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.send(user);
 };
 
-const createUser = (req, res) => {
-  const { name, email, country, contact } = req.body;
-  const user = {
-    id: uuid(),
-    name: name,
-    email: email,
-    country: country,
-    contact: contact,
-  };
-  users.push(user);
+const createUser = async (req, res) => {
+  const user = await User.create(req.body);
 
+  await user.save();
   res.send("Create a new user");
 };
 
-const deleteUser = (req, res) => {
-  const { id } = req.params;
-  const user = users.find((i) => i.id == id);
-  users = users.filter((i) => i.id !== id);
-  console.log(id);
+const deleteUser = async (req, res) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+
   if (!user) {
     res.status(404).send("User not found !");
   }
+
   res.send("Delete user");
 };
 
-const editUser = (req, res) => {
-  const { id } = req.params;
-  const user = users.find((i) => i.id == id);
-  const { name, email, country, contact } = req.body;
-  user.name = name;
-  user.email = email;
-  user.country = country;
-  user.contact = contact;
-  console.log(id);
-  if (!user) {
-    res.status(404).send("User not found !");
-  }
+const editUser = async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.params.id, {
+    name: req.body.name,
+    email: req.body.email,
+    country: req.body.country,
+    contact: req.body.contact,
+  });
+
+  await user.save();
   res.send("editing user");
 };
 

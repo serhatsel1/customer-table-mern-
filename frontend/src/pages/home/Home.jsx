@@ -13,8 +13,8 @@ export const Home = () => {
   const getUsers = async () => {
     const res = await axios.get("http://localhost:8080/users");
     if (res.status === 200) {
-      setData(res.data);
-      // console.log(res.data)
+      setData(res.data.users);
+      // console.log("datalar -->", res.data);
     }
   };
 
@@ -26,7 +26,6 @@ export const Home = () => {
       }
     }
   };
-
   return (
     <div className="table-wrapper">
       <table>
@@ -51,16 +50,15 @@ export const Home = () => {
                 <td>{user.contact}</td>
                 <td>
                   <div className="buttons">
-                    
-                    <Link to={`/view/${user.id}`} className="btn btn-primary">
+                    <Link to={`/view/${user._id}`} className="btn btn-primary">
                       View
                     </Link>
-                    <Link to={`/update/${user.id}`} className="btn btn-success">
+                    <Link to={`/update/${user._id}`} className="btn btn-success">
                       Edit
                     </Link>
                     <button
                       className="btn btn-danger"
-                      onClick={() => onDeleteUser(user.id)}
+                      onClick={() => onDeleteUser(user._id)}
                     >
                       Delete
                     </button>
