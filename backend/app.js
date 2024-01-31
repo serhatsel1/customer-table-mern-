@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import userRouter from "./routes/userRouter.js";
 import conn from "./db.js";
 
-const port = 8080;
+const port = process.env.PORT;
 
 dotenv.config();
 
