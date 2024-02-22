@@ -5,9 +5,8 @@ import dotenv from "dotenv";
 import userRouter from "./routes/userRouter.js";
 import conn from "./db.js";
 
-const port = process.env.PORT;
-
 dotenv.config();
+const port = process.env.PORT;
 
 conn();
 
