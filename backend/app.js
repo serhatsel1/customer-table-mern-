@@ -6,9 +6,8 @@ import userRouter from "./routes/userRouter.js";
 import conn from "./db.js";
 
 dotenv.config();
-const port = process.env.PORT;
-
 conn();
+const port = process.env.PORT;
 
 const app = express();
 
