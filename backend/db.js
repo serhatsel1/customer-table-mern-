@@ -1,17 +1,13 @@
 import mongoose from "mongoose";
 
-const conn = () => {
-  mongoose
-    .connect(process.env.DB_URI, {
-      dbName: "usermanagements",
-    })
-    .then(() => {
-      console.log("Connected to the DB successfully!");
-    })
-    .catch((err) => {
-      console.log(`DB connection error --> ${err}`);
-    });
+const conn = async () => {
+  try {
+    await mongoose.connect(process.env.DB_URI, {});
+    console.log("Connected to MongoDB!");
+  } catch (error) {
+    console.error("MongoDB Error:", error.message);
+    process.exit(1); // Uygulamayı durdur
+  }
+};
 
-  };
-  
-  export default conn;
+export default conn;
